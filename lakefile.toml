@@ -1,0 +1,11 @@
+name = "exact_calculator"
+defaultTargets = ["backend"]
+
+# No dependencies on purpose: Lean core only.
+
+[[lean_lib]]
+name = "Calculator"
+
+[[lean_exe]]
+name = "backend"
+root = "Main"
