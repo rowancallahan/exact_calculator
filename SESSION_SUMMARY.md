@@ -4,8 +4,8 @@
 - `git init` on `main`, remote `origin` = https://github.com/rowancallahan/exact_calculator.git (remote is empty; nothing committed yet).
 - Two shims written:
   - **Interaction shim** `frontend/shim.py` (PyQt6, ~45 lines with docstring): reads `layout.json`, builds fixed-size window and buttons, spawns the backend, ticks at 60 Hz.
-  - **Effect shim** `Calculator/Effect.lean`: `Machine σ` = pure `init` + `step : σ → String → σ × ByteArray`. Only `Machine.execIO` touches `IO` (stdin/stdout). Modelled on `~/pdf_renderer/LeanSvg/Effect.lean`. Theorems `run_length`, `run_prefix` (causality) kernel-checked.
-- Stub calculator `Calculator/Calc.lean` (62 lines): Float adding machine, buttons `1`, `+`, `=`, `clear`, starts at 0, plus a seven-segment placeholder display drawn as raw 320×240 RGB pixels.
+  - **Effect shim** `Main.lean` (18 lines): the only `IO` — a `for _ in [0:tickBudget]` loop (no `partial` anywhere in the backend) that reads a stdin line, calls the pure `Calc.step : Calc → String → Calc × ByteArray`, writes the reply to stdout, and breaks when stdin closes. `tickBudget` = 2^63 − 1, the largest `Nat` Lean keeps as a machine integer (≈ 4.9 billion years at 60 Hz). `Effect.lean`, the `Machine` structure and the theorems were removed on request (not needed yet); pattern to return to is `~/pdf_renderer/LeanSvg/Effect.lean`.
+- Stub calculator `Calculator/Calc.lean`: Float adding machine, buttons `1`, `+`, `=`, `clear`, starts at 0, plus a seven-segment placeholder display drawn as raw 320×240 RGB pixels.
 
 - `README.md` (name + drawing only) and `docs/architecture.svg`.
 

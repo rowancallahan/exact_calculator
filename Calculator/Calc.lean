@@ -1,5 +1,3 @@
-import Calculator.Effect
-
 /-!
 # The calculator
 
@@ -52,11 +50,10 @@ def Calc.press (s : Calc) : String → Calc
     | some digit => { s with entry := s.entry * 10 + digit.toFloat }
     | none => s
 
-def calculator : Machine Calc where
-  init := {}
-  step s key :=
-    let s := s.press key
-    let shown := if s.entry != 0 then s.entry else s.total
-    (s, s!"main {W} {H}\n".toUTF8 ++ render (format shown))
+/-- One tick: apply a button press (or none) and reply with the header and pixels. -/
+def Calc.step (s : Calc) (key : String) : Calc × ByteArray :=
+  let s := s.press key
+  let shown := if s.entry != 0 then s.entry else s.total
+  (s, s!"main {W} {H}\n".toUTF8 ++ render (format shown))
 
 end Calculator
