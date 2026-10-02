@@ -6,7 +6,7 @@
   - **Interaction shim** `frontend/shim.py` (PyQt6, ~45 lines with docstring): reads `layout.json`, builds fixed-size window and buttons, spawns the backend, ticks at 60 Hz.
   - **Effect shim** `Main.lean` (18 lines): the only `IO` — a `for _ in [0:tickBudget]` loop (no `partial` anywhere in the backend) that reads a stdin line, calls the pure `Calc.step : Calc → String → Calc × ByteArray`, writes the reply to stdout, and breaks when stdin closes. `tickBudget` = 2^63 − 1, the largest `Nat` Lean keeps as a machine integer (≈ 4.9 billion years at 60 Hz). `Effect.lean`, the `Machine` structure and the theorems were removed on request (not needed yet); pattern to return to is `~/pdf_renderer/LeanSvg/Effect.lean`.
 - Calculator `Calculator/Calc.lean` (140 lines, all pure, no `partial`): state is the screen text (e.g. `2*(3+4)-5`); keys append, `=` replaces it with the Float result or `E` on error, `clear` empties it. Shunting-yard evaluator for `+ - * /`, parentheses, unary minus, decimals. 5×7 dot-matrix font, last 12 characters shown, raw 320×240 RGB pixels.
-- `layout.json`: 19 buttons (0-9, `.`, `+ − × ÷`, `( )`, `=`, `clear`), 32 px tall so Qt's macOS style draws native push buttons. `frontend/shim.py` and `Main.lean` unchanged by this.
+- `layout.json`: 19 buttons (0-9, `.`, `+ − × ÷`, `( )`, `=`, `clear`), 64×54 px (bigger on request). Note: Qt's macOS style only draws rounded native push buttons at ≤32 px tall; taller ones are square bevel buttons. `frontend/shim.py` and `Main.lean` unchanged by this.
 
 - `README.md` (name + drawing only) and `docs/architecture.svg`.
 
