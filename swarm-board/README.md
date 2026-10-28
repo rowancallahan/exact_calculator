@@ -15,5 +15,5 @@ Limits: scans your 300 most recent sessions; the first scan of a transcript read
 ## Install
 
 ```
-/plugin install swarm-board --marketplace <owner>/<repo>
+/plugin install swarm-board --marketplace rowancallahan/swarm-board
 ```
